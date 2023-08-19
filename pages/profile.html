@@ -2,53 +2,58 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>profile</title>
-    <link rel="stylesheet" href="../css/profile.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>profile</title>
+  <link rel="stylesheet" href="../css/profile.css" />
 </head>
 
 <body>
-    <nav class="navbar">
-        <div class="navbar-left">
-            <h1 class="h1">Personal Blogging App</h1>
-        </div>
-        <div class="navbar-right">
-            <a href="./profile.html" id="username">username</a>
-            <button id="logout-btn">Logout</button>
-        </div>
-    </nav>
-    <div id="header">
-        <h2>Profile</h2>
+  <nav class="navbar">
+    <div class="navbar-left">
+      <h1 class="h1">Personal Blogging App</h1>
     </div>
-    <div" class="header">
-        <div class="conatiner">
-            <div class="profile-img"></div>
-            <div class="details">
-                <h3>user name</h3>
-                <h4>password</h4>
-                <input type="password" name="old password" placeholder="Old Password">
-                <input type="password" name="new password" placeholder="New password">
-                <input type="password" name="Repeat password" placeholder="Repeat password">
-                <input type="button" value="update password">
-            </div>
-        </div>
-        </div>
+    <div class="navbar-right">
+      <a href="./profile.html" id="username">username</a>
+      <button id="logout-btn">Logout</button>
+    </div>
+  </nav>
+  <div class="profile-heading">
+    <h1 class="profiletext">Profile</h1>
+  </div>
 
-        <script>
-            // Assuming you're using Firebase Authentication
-            const logoutButton = document.getElementById('logout-btn');
+  <div class="profile">
+    <div class="profile-img">
+      <img
+        src="https://images.unsplash.com/photo-1554126807-6b10f6f6692a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
+        alt="" />
+    </div>
+    <div class="details">
+      <h2 class="text">Muharraf Hussain</h2>
+      <h2 class="text pass">Password</h2>
+      <input type="password" name="Old password" placeholder="Old Password" />
+      <input type="password" name="New password" placeholder="New password" />
+      <input type="password" name="Repeat password" placeholder="Repeat password" />
+      <input type="button" value="Update password" />
+    </div>
+  </div>
 
-            logoutButton.addEventListener('click', () => {
-                // Perform logout operation using Firebase Authentication
+  <script>
+    // Assuming you're using Firebase Authentication
+    const logoutButton = document.getElementById("logout-btn");
 
-                // Redirect to the login page after logout
-                window.location.href = './login.html'; // Change the path as needed
-            }).catch((error) => {
-                // Handle logout error
-                console.error('Logout error:', error);
-            });
-        </script>
+    logoutButton
+      .addEventListener("click", () => {
+        // Perform logout operation using Firebase Authentication
+
+        // Redirect to the login page after logout
+        window.location.href = "./login.html"; // Change the path as needed
+      })
+      .catch((error) => {
+        // Handle logout error
+        console.error("Logout error:", error);
+      });
+  </script>
 </body>
 
 </html>

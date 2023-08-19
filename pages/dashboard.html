@@ -1,41 +1,192 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/dashboard.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/dashboard.css" />
     <title>Document</title>
-</head>
+  </head>
 
-<body>
-    <nav class="navbar">
+  <body>
+    <div class="blog">
+      <nav class="navbar">
         <div class="navbar-left">
-            <h1 class="h1">Personal Blogging App</h1>
+          <h1 class="h1">Personal Blogging App</h1>
         </div>
         <div class="navbar-right">
-            <a href="./profile.html" id="username">username</a>
-            <button id="logout-btn">Logout</button>
+          <a href="./profile.html" id="username">username</a>
+          <button id="logout-btn">Logout</button>
         </div>
-    </nav>
+      </nav>
+      <div class="dashboard">
+        <h1 class="dashtext">Dashboard</h1>
+      </div>
+      <section id="blogs">
+        <div class="input-blog">
+          <input type="text" placeholder="Placeholder" id="title" />
+          <textarea
+            name=""
+            id="desc"
+            cols="30"
+            rows="10"
+            placeholder="What's in your mind"
+          ></textarea>
+          <button class="blog-btn" id="blog-btn">Publish Blog</button>
+        </div>
+      </section>
 
-    <div class="header">
-        <h2>Dashboard</h2>
+      <div>
+        <h2 class="dashtext">All Blogs</h2>
+      </div>
+
+      <section id="posts">
+        <div class="row">
+          <img
+            src="https://images.pexels.com/photos/297933/pexels-photo-297933.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+            alt="new-img"
+            class="img"
+          />
+          <div class="text">
+            <h1 class="heading">
+              An Action Button Could be Comming to the iphone 15S
+            </h1>
+            <h6 class="desc">Inzamam Malik - August 16th, 2023</h6>
+          </div>
+        </div>
+        <div class="content">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio,
+          pariatur ipsum numquam quaerat repellat, quis, fuga natus facere
+          officia iusto voluptatem omnis veniam sed inventore nihil esse quo
+          fugiat magnam!
+          <br />
+          <br />
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio,
+          pariatur ipsum numquam quaerat repellat, quis, fuga natus facere
+          officia iusto voluptatem omnis veniam sed inventore nihil esse quo
+          fugiat magnam! Lorem ipsum dolor sit amet consectetur adipisicing
+          elit. Odio, pariatur ipsum numquam quaerat repellat, quis, fuga natus
+          facere officia iusto voluptatem omnis veniam sed inventore nihil esse
+          quo fugiat magnam!
+        </div>
+        <div class="update">
+          <li>Delete</li>
+          <li>Edit</li>
+        </div>
+      </section>
     </div>
-    <script>
-        // Assuming you're using Firebase Authentication
-        const logoutButton = document.getElementById('logout-btn');
+    <script
+      type="module"
+      src="https://www.gstatic.com/firebasejs/10.2.0/firebase-app.js"
+    ></script>
+    <script
+      type="module"
+      src="https://www.gstatic.com/firebasejs/10.2.0/firebase-database.js"
+    ></script>
 
-        logoutButton.addEventListener('click', () => {
-            // Perform logout operation using Firebase Authentication
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.2.0/firebase-app.js";
+      import {
+        getDatabase,
+        ref,
+        set,
+        child,
+        update,
+        remove,
+      } from "https://www.gstatic.com/firebasejs/10.2.0/firebase-database.js";
+      const firebaseConfig = {
+        apiKey: "AIzaSyDZHUq6JtY0Pseaj24Dj9FYKAz8l9RCBoU",
+        authDomain: "blogging-99ae2.firebaseapp.com",
+        databaseURL: "https://blogging-99ae2-default-rtdb.firebaseio.com",
+        projectId: "blogging-99ae2",
+        storageBucket: "blogging-99ae2.appspot.com",
+        messagingSenderId: "206087411993",
+        appId: "1:206087411993:web:395cd9965966512af40d88",
+        measurementId: "G-73SFHLX667",
+      };
 
-            // Redirect to the login page after logout
-            window.location.href = './login.html'; // Change the path as needed
-        }).catch((error) => {
-            // Handle logout error
-            console.error('Logout error:', error);
+      const app = initializeApp(firebaseConfig);
+
+      const db = getDatabase();
+
+      const publish = document.getElementById("blog-btn");
+      const blogPostsContainer = document.getElementById("posts");
+
+      function InsertData() {
+        const title = document.getElementById("title").value;
+        const desc = document.getElementById("desc").value;
+
+        set(ref(db, title), {
+          title: title,
+          Content: desc,
+        })
+          .then(() => {
+            alert("Data stored successfully");
+          })
+          .catch((err) => {
+            alert(err);
+          });
+      }
+      function getData() {
+        const dbRef = ref(db);
+
+        // Create an array to store the retrieved data
+        const blogPosts = [];
+
+        // Iterate through each heading element
+        const headingElements = document.querySelectorAll(".heading");
+        headingElements.forEach((headingElement) => {
+          const heading = headingElement.innerText;
+
+          // Retrieve data from Firebase for each heading
+          get(child(dbRef, heading)).then((snapshot) => {
+            const data = snapshot.val();
+            blogPosts.push(data);
+            // Call a function to display the data after all data is retrieved
+            displayBlogPosts(blogPosts);
+          });
         });
-    </script>
-</body>
+      }
 
+      function displayBlogPosts(posts) {
+        // Clear the container before populating it with new posts
+        blogPostsContainer.innerHTML = "";
+
+        // Iterate through the posts array and create HTML elements
+        posts.forEach((post) => {
+          const postDiv = document.createElement("div");
+          postDiv.classList.add("blog-post");
+
+          const postTitle = document.createElement("h1");
+          postTitle.innerText = post.title;
+
+          const postContent = document.createElement("div");
+          postContent.innerText = post.Content;
+
+          postDiv.appendChild(postTitle);
+          postDiv.appendChild(postContent);
+
+          // Append the postDiv to the blogPostsContainer
+          blogPostsContainer.appendChild(postDiv);
+        });
+      }
+      getData();
+
+      publish.addEventListener("click", InsertData);
+
+      // Assuming you're using Firebase Authentication
+      // const logoutButton = document.getElementById("logout-btn");
+
+      // logoutButton
+      //   .addEventListener("click", () => {
+      //     // Perform logout operation using Firebase Authentication
+
+      //     // Redirect to the login page after logout
+      //     window.location.href = "./login.html"; // Change the path as needed
+      //   })
+      //   .catch((error) => {
+      //     // Handle logout error
+      //     console.error("Logout error:", error);
+      //   });
+    </script>
+  </body>
 </html>
