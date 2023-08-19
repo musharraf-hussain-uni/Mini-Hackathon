@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="navbar-left">
+            <h1 class="h1">Personal Blogging App</h1>
+        </div>
+        <div class="navbar-right">
+            <a href="./profile.html" id="username">username</a>
+            <button id="logout-btn">Logout</button>
+        </div>
+    </nav>
+
+    <div class="header">
+        <h2>Dashboard</h2>
+    </div>
+    <script>
+        // Assuming you're using Firebase Authentication
+        const logoutButton = document.getElementById('logout-btn');
+
+        logoutButton.addEventListener('click', () => {
+            // Perform logout operation using Firebase Authentication
+
+            // Redirect to the login page after logout
+            window.location.href = './login.html'; // Change the path as needed
+        }).catch((error) => {
+            // Handle logout error
+            console.error('Logout error:', error);
+        });
+    </script>
+</body>
+
+</html>
